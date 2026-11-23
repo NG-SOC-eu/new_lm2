@@ -1,0 +1,141 @@
+# riskmanagementrita-crcz
+
+This repository contains all resources required to deploy and run **Learning Module 2 – Risk Management** 
+on the [CyberRangeCZ Platform](https://docs.platform.cyberrange.cz/).
+
+## Structure
+
+```
+.
+├── training.yaml                # CRCZ training definition
+├── topology.yml                 # Combined topology (both use cases)
+├── content/                     # Exercise descriptions
+│   ├── exercise1.md
+│   ├── exercise2.md
+│   ├── rita_guide.md
+│   ├── solutions/               # Instructor answer keys
+│   └── templates/               # Fillable deliverable templates
+│       ├── risk_register.csv
+│       ├── threat_model.md
+│       ├── risk_matrix.md
+│       ├── risk_treatment_plan.md
+│       ├── executive_summary.md
+│       └── submission_checklist.md
+├── provisioning/               # Combined provisioning playbook
+├── sandboxes/                  # Network topologies and provisioning
+│   ├── topology_puc1.yaml
+│   ├── topology_puc3.yaml
+│   └── provisioning_puc1/
+│       └── site.yml
+│   └── provisioning_puc3/
+│       └── site.yml
+├── static/                     # Visual assets (e.g., diagrams)
+│   ├── diagram_banking.png
+│   └── diagram_energy.png
+└── README.md                   # This file
+```
+
+## Exercises
+
+- `Exercise 1`: Risk assessment and threat modelling in a **banking system**  
+
+Based on:
+![Diagram banking](static/diagram_banking.png)
+
+- `Exercise 2`: ICS/SCADA-focused risk assessment for an **energy infrastructure**
+
+Based on:
+![Diagram energy](static/diagram_energy.png)
+
+## Roles Targeted
+
+- Cybersecurity Risk Manager
+- Security Architect
+- OT/ICS Security Analyst
+
+## Standards and Frameworks
+
+- MITRE ATT&CK
+- STRIDE Threat Modelling
+- ENISA ECSF Competence Mapping
+- ISO 27005, IEC 62443 (for ICS)
+
+## Usage
+
+1. Deploy using the CyberRangeCZ Platform interface.
+2. Load the provided topologies and provisioning playbooks.
+3. Follow the instructions in the markdown files within `content/`.
+
+## Using RITA
+
+RITA (Risk Identification and Threat Assessment) provides a web interface for
+cataloguing assets, mapping threats and recording risk calculations throughout
+the exercises. Access it from any machine in the training environment using:
+
+- **URL:** `https://ng-soc.eurodyn.com/login`
+- **Username:**
+- **Password:**
+
+Refer to the [RITA guide](content/rita_guide.md) for step-by-step instructions on logging in, creating assets, mapping threats and vulnerabilities, evaluating risk, and importing data. The exercises require using RITA to build asset inventories, model threats and document overall risk evaluations.
+
+## Deliverables and submission
+
+The tables inside the exercise descriptions are rendered read-only by the
+platform, so trainees cannot type into them. Deliverables are produced and
+handed in as follows:
+
+1. **RITA** is the tool of record for assets, threats, vulnerabilities and risk
+   evaluation. Trainees export the result as evidence.
+2. **Fillable templates** from `content/templates/` are deployed by the
+   provisioning playbooks to the analyst workstation of each scenario:
+   - `bank-analyst:/home/debian/deliverables/exercise1/`
+   - `corp-workstation:/home/debian/deliverables/exercise2/`
+
+   These are plain-text Markdown and CSV files, editable with `nano`, `vim`,
+   `mousepad` or LibreOffice.
+3. **A questionnaire level** (`ASSESSMENT_LEVEL`, type `QUESTIONNAIRE`) follows
+   each exercise. It carries one free-form question per deliverable plus
+   extended-matching grids for rating likelihood and impact of a fixed list of
+   reference scenarios — this is the writable replacement for the 5×5 matrix.
+   **The questionnaire is the submission**: its answers are stored per trainee
+   and are what the instructor reviews. The files and the RITA export are the
+   supporting evidence.
+
+Answer keys and the reference ratings for the grids are in
+`content/solutions/`.
+
+## Deployment
+
+To run this training on the CyberRangeCZ Platform:
+
+1. **Install prerequisites** – Ansible 2.12+ is recommended. The provisioning playbooks use modules from the `ansible.posix` (`sysctl`) and `community.general` (`iptables_state`) collections. Install them before running the playbooks:
+
+   ```bash
+   ansible-galaxy collection install ansible.posix community.general
+   ```
+
+   If you add playbooks that rely on other external collections, update this list accordingly so all required collections are documented.
+2. **Import the training** – Log in to CyberRangeCZ Platform and navigate to *Training Management → Import*. Upload all files from this repository, including `training.yaml`.
+3. **Select a sandbox variant** – When launching a scenario, choose either:
+   - `sandboxes/topology_puc1.yaml` (banking use case), or
+   - `sandboxes/topology_puc3.yaml` (ICS use case).
+4. **Run the provisioning playbook** – For the chosen topology, execute the matching playbook from `sandboxes/provisioning_puc1/site.yml` or `sandboxes/provisioning_puc3/site.yml`.
+5. **Start the exercise** – After provisioning completes, trainees can follow the steps in `content/exercise1.md` or `content/exercise2.md` as appropriate.
+
+## Getting Started
+
+Once the environment has been deployed, connect via **SSH** to the desired host using the management account `debian`:
+
+```bash
+ssh debian@<IP or host-name>
+```
+
+Use the password provided by the instructor for the training run.
+
+Recommended workflow:
+
+1. Open a terminal in the CRCZ interface and first connect to the main analyst machine (`bank-analyst` or `corp-workstation`).
+2. From there, access the remaining scenario machines with `ssh`.
+3. Refer to the exercise guide in the `content/` folder (`exercise1.md` or `exercise2.md`).
+4. Fill in the templates in `~/deliverables/exercise1/` (or `exercise2/`) and save any evidence — RITA exports, screenshots — in the same folder.
+5. Submit the answers in the **Deliverables submission** questionnaire that follows each exercise.

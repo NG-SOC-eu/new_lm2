@@ -1,0 +1,471 @@
+{
+  "title" : "v5 Risk Management and threat modeling",
+  "description" : "Learning Module 2 – Risk Management on the CyberRangeCZ Platform.",
+  "prerequisites" : [ ],
+  "outcomes" : [ ],
+  "state" : "UNRELEASED",
+  "levels" : [ {
+    "title" : "Personal Data Notice",
+    "level_type" : "ACCESS_LEVEL",
+    "order" : 0,
+    "estimated_duration" : 0,
+    "minimal_possible_solve_time" : null,
+    "passkey" : "I ACCEPT",
+    "cloud_content" : "This cyber range exercise is part of the **NGSOC (Next Generation Security Operation Centres)** project, co-funded by the European Union.\n\nWhile you take part in this exercise, the platform collects and records data about your activity, including:\n\n* your user account details (username / user ID)\n* the actions you perform in the exercise environment, including commands entered\n* your answers, the hints you use, your scores and timestamps\n\n**Why we collect it:** to run and assess the exercise, to evaluate the training pilot, and to improve future training sessions. Results may be reported in project deliverables in **aggregated and anonymised** form only. You will not be personally identified.\n\n**How it is protected:** the data is stored securely, is accessible only to authorised project partners, and is kept only for as long as needed for the project ([retention period, e.g. until the end of the project]).\n\n**To continue**, type ***I ACCEPT*** in the answer field below and submit.\n\nIf you do not agree, please do not continue. Close this exercise and exit the platform. No further data will be collected.",
+    "local_content" : "This cyber range exercise is part of the **NGSOC (Next Generation Security Operation Centres)** project, co-funded by the European Union.\n\nWhile you take part in this exercise, the platform collects and records data about your activity, including:\n\n* your user account details (username / user ID)\n* the actions you perform in the exercise environment, including commands entered\n* your answers, the hints you use, your scores and timestamps\n\n**Why we collect it:** to run and assess the exercise, to evaluate the training pilot, and to improve future training sessions. Results may be reported in project deliverables in **aggregated and anonymised** form only. You will not be personally identified.\n\n**How it is protected:** the data is stored securely, is accessible only to authorised project partners, and is kept only for as long as needed for the project ([retention period, e.g. until the end of the project]).\n\n**To continue**, type ***I ACCEPT*** in the answer field below and submit.\n\nIf you do not agree, please do not continue. Close this exercise and exit the platform. No further data will be collected."
+  }, {
+    "title" : "Learning Module 2 – Risk Management",
+    "level_type" : "INFO_LEVEL",
+    "order" : 0,
+    "estimated_duration" : 0,
+    "minimal_possible_solve_time" : null,
+    "content" : "# riskmanagementrita-crcz\n\nIt contains all KYPO/CRCZ exercises required for **Learning Module 2 – Risk Management** on the [CyberRangeCZ Platform](https://docs.platform.cyberrange.cz/).\n\n## Exercises\n\n- `Exercise 1`: Risk assessment and threat modelling in a **banking system**  \n\nBased on:\n![Diagram banking](https://github.com/NG-SOC-eu/riskmanagementrita-crcz/blob/v1/static/diagram_banking.png?raw=true)\n\n- `Exercise 2`: ICS/SCADA-focused risk assessment for an **energy infrastructure**\n\nBased on:\n![Diagram energy](https://github.com/NG-SOC-eu/riskmanagementrita-crcz/blob/v1/static/diagram_energy.png?raw=true)\n\n## Roles Targeted\n\n- Cybersecurity Risk Manager\n- Security Architect\n- OT/ICS Security Analyst\n\n## Standards and Frameworks\n\n- MITRE ATT&CK\n- STRIDE Threat Modelling\n- ENISA ECSF Competence Mapping\n- ISO 27005, IEC 62443 (for ICS)\n\n## How you record and submit your work\n\nThe tables shown in these level descriptions are **read-only** – you cannot type into them. Your work is recorded in three places instead:\n\n1. **RITA** is the tool of record for assets, threats, vulnerabilities and risk evaluation. You build the model there and export the result as evidence.\n2. **Fillable templates on the analyst machine.** Each scenario workstation has a `~/deliverables/exercise1/` (or `exercise2/`) folder containing writable copies of the threat model, risk register, 5x5 risk matrix, treatment plan and executive summary. Edit them with `nano`, `vim`, `mousepad` or LibreOffice.\n3. **A questionnaire level in this training.** After each exercise there is a **Deliverables submission** level with an answer box for every deliverable, plus clickable grids for rating likelihood and impact. **That questionnaire is your submission** – it is what the instructor sees and scores. Everything else is supporting evidence.\n\nPlan for it: do the analysis in RITA, draft in the template files, then copy the key lines into the questionnaire.\n\n## Using RITA\n\nRITA (Risk Identification and Threat Assessment) provides a web interface for cataloguing assets, mapping threats and recording risk calculations throughout the exercises. Access it from any machine in the training environment using:\n\n- **URL:** [RITA](https://ng-soc.eurodyn.com/login)\n- **Username: reviewer**\n- **Password: qwerty!23**\n\nRefer to the [RITA guide](https://github.com/NG-SOC-eu/riskmanagementrita-crcz/blob/main/content/rita_guide.md?raw=true) for step-by-step instructions on logging in, creating assets, mapping threats and vulnerabilities, evaluating risk, importing data and **exporting your results**. The exercises require using RITA to build asset inventories, model threats and document overall risk evaluations.\n\n## Getting Started\n\nOnce the environment has been deployed, connect via **SSH** to the desired host using the management account `debian`:\n\n```bash\nssh debian@<IP or host-name>\n```\n\nThe default password is usually **``qwerty!23``** unless the instructor states otherwise.\n\nRecommended workflow:\n\n1. Open a terminal in the CRCZ interface and first connect to the main analyst machine (`bank-analyst` or `corp-workstation`) or you can also right-click on each system in the topology on the right to access SSH or GUI interface.\n2. From there, access the remaining scenario machines with `ssh`.\n3. Refer to the exercise guide.\n4. Fill in the templates in `~/deliverables/` and save any evidence (RITA exports, screenshots) in the same folder.\n5. Submit your answers in the **Deliverables submission** level that follows each exercise.\n\n**Note:** In small screens, to see the topology better, zoom out the page in the browser."
+  }, {
+    "title" : "RITA Guide",
+    "level_type" : "INFO_LEVEL",
+    "order" : 1,
+    "estimated_duration" : 0,
+    "minimal_possible_solve_time" : null,
+    "content" : "# RITA Quick Guide\n\nThis guide summarises the main steps for working with RITA (Risk Identification and Threat Assessment).\n\n[Download RITA Guide](https://github.com/NG-SOC-eu/riskmanagementrita-crcz/blob/main/content/RITA.pdf?raw=true)\n\n## Login\n1. Navigate to [RITA](https://ng-soc.eurodyn.com/login).\n2. Enter the username: **reviewer** and password: **qwerty!23** provided in the exercise.\n3. Click **Log In** to access the dashboard.\n\n## Asset Creation\n1. From the dashboard, choose **Assets → Add Asset**.\n2. Provide name, description, and owner.\n3. Save the asset; repeat for each system component.\n\n## Threat and Vulnerability Mapping\n1. Open an asset and use **Threats → Add Threat** to assign relevant threats.\n2. Link vulnerabilities via **Vulnerabilities → Add Vulnerability**.\n3. Capture references or evidence in the provided fields.\n\n## Risk Evaluation\n1. Within the asset, select **Risk Evaluation**.\n2. Estimate likelihood and impact; RITA calculates the risk score.\n3. Document existing controls and recommended treatments.\n\n## Imports\n1. Use **Data Import** in the main menu to upload CSV or JSON templates.\n2. Map incoming fields to RITA’s schema and run the import.\n3. Review imported records for accuracy.\n\nThe register template `~/deliverables/exercise1/risk_register.csv` on the analyst machine uses column names that map onto RITA’s asset, threat and risk fields, so you can build the register offline and import it in one go.\n\n## Exporting your results (required evidence)\n1. Open the risk evaluation view for the exercise.\n2. Choose **Export** and select CSV (or JSON).\n3. Save the file on the analyst machine as `~/deliverables/exercise1/rita_export.csv` (or `exercise2`). If the browser saves it to `~/Downloads`, move it:\n   ```bash\n   mv ~/Downloads/rita_export*.csv ~/deliverables/exercise1/rita_export.csv\n   ```\n4. If your build of RITA offers no export, take a screenshot of the risk evaluation table instead and save it in the same folder as `rita_evaluation.png`.\n5. Note the file name and the number of assets, threats and risks you registered – the submission questionnaire asks for them.\n\n## Where the answers are recorded\nRITA holds the model. The **Deliverables submission** questionnaire at the end of each exercise is where you type the answers that are graded. The files in `~/deliverables/` are your working documents and evidence."
+  }, {
+    "title" : "Exercise 1 – Risk Assessment and Threat Modelling for a Banking System (PUC1 – Financial Sector)",
+    "level_type" : "TRAINING_LEVEL",
+    "order" : 2,
+    "estimated_duration" : 240,
+    "minimal_possible_solve_time" : null,
+    "answer" : "Yes",
+    "answer_variable_name" : null,
+    "content" : "# Exercise 1 – Risk Assessment and Threat Modelling for a Banking System (PUC1 – Financial Sector)\n\n## Scenario\nYou are the Cybersecurity Risk Manager for a major retail bank offering online services. Recent threat intelligence reports indicate that cybercriminal groups are targeting banking web applications and payment systems to commit fraud and exfiltrate sensitive customer data. Explore the virtual machines (`bank-analyst`, `bank-web`, `bank-db`) to identify high-value assets and possible attack paths.\n\n### Environment Diagram\n![Banking topology](https://github.com/NG-SOC-eu/riskmanagementrita-crcz/blob/v1/static/diagram_banking.png?raw=true)\n\n### Connection Guide\n1. Open a terminal in the CyberRangeCZ interface.\n2. Connect to the analysis workstation:\n   ```bash\n   ssh debian@bank-analyst\n   ```\n   Password: **qwerty!23**\n\n      **`You can also right-click on each system in the topology on the right to access SSH or GUI interface.`**\n\n3. From `bank-analyst`, connect to the web server and database:\n   ```bash\n   ssh debian@bank-web\n   ssh debian@bank-db\n   ```\n   Password: **qwerty!23**\n\n      **`You can also right-click on each system in the topology on the right to access SSH or GUI interface.`**\n\n4. Use `nmap` to scan services on `bank-web` and `bank-db` and `wireshark` (or `tcpdump`) to capture traffic between the machines.\n\n## Steps\n1. Map critical assets and data flows between the provided machines.\n2. Log into RITA and model bank assets, threats, and countermeasures following the RITA guide.\n3. Build threat scenarios using STRIDE and MITRE ATT&CK techniques.\n4. Assess the likelihood and impact of each scenario.\n5. Propose mitigations and prioritise them in a risk treatment plan.\n6. Prepare documentation for technical and executive audiences.\n\n## Deliverables\n\nThe tables on this page are read-only – you cannot type into them. Each deliverable is produced in one of three places:\n\n| Deliverable | Where you produce it |\n|---|---|\n| Asset inventory, threats, vulnerabilities, risk evaluation | **RITA** (the tool of record) |\n| Threat model table | `~/deliverables/exercise1/threat_model.md` |\n| Risk register | `~/deliverables/exercise1/risk_register.csv` |\n| 5x5 risk matrix and risk ranking | `~/deliverables/exercise1/risk_matrix.md` |\n| Risk treatment plan | `~/deliverables/exercise1/risk_treatment_plan.md` |\n| Executive summary | `~/deliverables/exercise1/executive_summary.md` |\n| RITA export (evidence) | `~/deliverables/exercise1/rita_export.csv` |\n\n### Working files on the machine\n\nThe templates are pre-installed on `bank-analyst`. They are plain-text files, so you can type into them:\n\n```bash\nssh debian@bank-analyst\ncd ~/deliverables/exercise1\nls -l\nnano threat_model.md                    # or vim / mousepad\nlibreoffice --calc risk_register.csv    # spreadsheet view of the register\n```\n\nIf the folder is missing, ask the instructor for the templates or recreate the files by hand – the questionnaire is what is graded, the files are the supporting evidence.\n\n### How you submit your answers\n\nWhen you finish, submit **`Yes`** on this level. The next level, **Exercise 1 – Deliverables submission**, is a questionnaire with an answer box for each deliverable: asset inventory, data flows, threat model, likelihood and impact ratings on a clickable 5x5 grid, risk ranking, treatment plan, executive summary and the reflection questions. Copy the key lines from your working files into those boxes.\n\nBefore moving on, run through `~/deliverables/exercise1/submission_checklist.md`.\n\n## Target Roles\n- Cybersecurity Risk Manager\n- Security Architect\n- SOC Analyst\n\n## Skills Covered\n- Threat modelling, risk analysis, control design\n- Risk communication and prioritisation\n- Strategic decision-making under uncertainty\n\n## Once you have completed the exercise, submit Yes to move on to the submission questionnaire.",
+    "solution" : "Once you have completed the exercise, submit Yes to move on to the submission questionnaire.",
+    "solution_penalized" : true,
+    "hints" : [ {
+      "title" : "Hint 1",
+      "content" : "Hint 1 – Focus of the exercise (light)\n\nLook at the customer-facing systems in the banking diagram (e.g. online banking portal, mobile banking, external web services). Which of these are reachable from the internet and process sensitive data such as credentials or account information?",
+      "hint_penalty" : 0,
+      "order" : 0
+    }, {
+      "title" : "Hint 2",
+      "content" : "Hint 2 – Data flows and trust boundaries (medium)\n\nTrace how a user request travels from the internet to the back-end systems:\n\nWhere is the first point of entry from the public internet?\n\nThrough which components does the traffic pass before reaching the core banking database?\n\nWhere would you logically draw trust boundaries (e.g. internet ↔ DMZ, DMZ ↔ internal network)?\n\nUse these boundaries to guide where threats are most likely and most impactful. Record them in the flow table of ~/deliverables/exercise1/threat_model.md.",
+      "hint_penalty" : 0,
+      "order" : 1
+    }, {
+      "title" : "Hint 3",
+      "content" : "Hint 3 – Typical threat patterns (strong)\n\nThink about very common banking threats:\n\nCredential attacks against the online banking portal (e.g. password guessing, credential stuffing).\n\nInjection attacks (e.g. SQL injection) from the web application into the database.\n\nSession hijacking between client and web front-end.\n\nPrivilege misuse or insider abuse on admin or support systems.\n\nDenial of service on external web services that would disrupt customer access.\n\nIf you’re stuck, pick 2–3 critical assets (e.g. “Online banking web front-end”, “Core banking DB”, “Authentication service”) and for each one:\n\nIdentify at least one STRIDE category that clearly applies.\n\nMap it to one ATT&CK technique as an example.\n\nEstimate likelihood and impact and record it in RITA, then copy the line into risk_register.csv.",
+      "hint_penalty" : 0,
+      "order" : 2
+    } ],
+    "incorrect_answer_limit" : 100,
+    "attachments" : [ ],
+    "max_score" : 100,
+    "variant_answers" : false,
+    "reference_solution" : [ ],
+    "mitre_techniques" : [ ],
+    "expected_commands" : [ ],
+    "commands_required" : true
+  }, {
+    "title" : "Exercise 1 – Deliverables submission (Banking)",
+    "level_type" : "ASSESSMENT_LEVEL",
+    "order" : 3,
+    "estimated_duration" : 30,
+    "minimal_possible_solve_time" : null,
+    "instructions" : "This is where you hand in Exercise 1. Copy your answers from the working files in `~/deliverables/exercise1/` on `bank-analyst` and from your RITA model.\n\nHow to answer:\n\n- Free-text questions expect one item per line, using the field order given in the question and `|` as the separator. Keep the risk IDs (R01, R02, ...) consistent with your register.\n- The two rating grids replace the empty 5x5 matrix that you could not write into. They use a fixed list of reference scenarios so that every trainee's answers can be compared; your own additional scenarios go in the free-text answers.\n- Answers are saved when you finish the level. Nothing here is auto-graded – the instructor reviews your submission.",
+    "questions" : [ {
+      "question_type" : "FFQ",
+      "text" : "Asset inventory. List the five most critical assets you registered in RITA, one per line: ID | Asset name | Host or component | Owner | C rating | I rating | A rating (High/Medium/Low).",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 0,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Trust boundaries and data flows. One flow per line: ID | From | To | Protocol and port | Boundary crossed (e.g. internet to DMZ) | Authenticated (yes/no) | Encrypted (yes/no).",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 1,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Threat model. One threat scenario per line: risk_id | Asset | STRIDE category | ATT&CK technique ID and name | Attack path (entry point to target) | Vulnerability that enables it.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 2,
+      "answer_required" : true
+    }, {
+      "question_type" : "EMI",
+      "text" : "Likelihood. Rate how likely each reference scenario is in the next 12 months for this bank.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 3,
+      "answer_required" : true,
+      "extended_matching_options" : [ {
+        "text" : "Very Low",
+        "order" : 0
+      }, {
+        "text" : "Low",
+        "order" : 1
+      }, {
+        "text" : "Medium",
+        "order" : 2
+      }, {
+        "text" : "High",
+        "order" : 3
+      }, {
+        "text" : "Very High",
+        "order" : 4
+      } ],
+      "extended_matching_statements" : [ {
+        "text" : "S1 Credential stuffing or password guessing against the online banking portal (bank-web)",
+        "order" : 0
+      }, {
+        "text" : "S2 SQL injection from the web application into the core banking database (bank-db)",
+        "order" : 1
+      }, {
+        "text" : "S3 Session hijacking of a customer session between client and web front-end",
+        "order" : 2
+      }, {
+        "text" : "S4 Privilege misuse by an insider on the analyst workstation (bank-analyst)",
+        "order" : 3
+      }, {
+        "text" : "S5 Exfiltration of customer data from the core banking database",
+        "order" : 4
+      }, {
+        "text" : "S6 Denial of service against the public banking portal",
+        "order" : 5
+      } ]
+    }, {
+      "question_type" : "EMI",
+      "text" : "Impact. Rate the business impact if each reference scenario materialises (financial, regulatory and reputational).",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 4,
+      "answer_required" : true,
+      "extended_matching_options" : [ {
+        "text" : "Very Low",
+        "order" : 0
+      }, {
+        "text" : "Low",
+        "order" : 1
+      }, {
+        "text" : "Medium",
+        "order" : 2
+      }, {
+        "text" : "High",
+        "order" : 3
+      }, {
+        "text" : "Critical",
+        "order" : 4
+      } ],
+      "extended_matching_statements" : [ {
+        "text" : "S1 Credential stuffing or password guessing against the online banking portal (bank-web)",
+        "order" : 0
+      }, {
+        "text" : "S2 SQL injection from the web application into the core banking database (bank-db)",
+        "order" : 1
+      }, {
+        "text" : "S3 Session hijacking of a customer session between client and web front-end",
+        "order" : 2
+      }, {
+        "text" : "S4 Privilege misuse by an insider on the analyst workstation (bank-analyst)",
+        "order" : 3
+      }, {
+        "text" : "S5 Exfiltration of customer data from the core banking database",
+        "order" : 4
+      }, {
+        "text" : "S6 Denial of service against the public banking portal",
+        "order" : 5
+      } ]
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Risk ranking. Your risks from highest to lowest, one per line: Rank | risk_id | Likelihood | Impact | Risk level (Critical/High/Medium/Low) | RITA score.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 5,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "RITA evidence. Give the full path and name of the export file you saved, and the number of assets, threats and risks you registered in RITA.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 6,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Risk treatment plan. One line per risk, highest priority first: Priority | risk_id | Treatment option (mitigate/transfer/avoid/accept) | Control to implement | Standard reference | Owner | Residual risk.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 7,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Accepted risks. Any risk you decided not to treat: risk_id | Why it is accepted | Who accepts it | Review date. Write 'none' if you are treating all of them.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 8,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Executive summary (about 1200 characters, no jargon): the situation, your top three risks in business terms, the decisions you need leadership to approve, and the residual risk statement.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 9,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Reflection. Which threats require immediate mitigation, and why those rather than the others?",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 10,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Reflection (optional). How would you communicate the residual risk to leadership? What would you say to the board that you would not put in a technical report?",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 11,
+      "answer_required" : false
+    } ],
+    "assessment_type" : "QUESTIONNAIRE"
+  }, {
+    "title" : "Exercise 2 – Risk Assessment and Threat Modelling for an Energy Infrastructure (PUC3 – ICS Sector)",
+    "level_type" : "TRAINING_LEVEL",
+    "order" : 4,
+    "estimated_duration" : 240,
+    "minimal_possible_solve_time" : null,
+    "answer" : "Yes",
+    "answer_variable_name" : null,
+    "content" : "# Exercise 2 – Risk Assessment and Threat Modelling for an Energy Infrastructure (PUC3 – ICS Sector)\n\n## Scenario\nYou are acting as the Cybersecurity Risk Manager for a national power transmission operator. The environment includes IT/OT interconnection, SCADA servers, RTUs and engineering workstations. Alerts about ICS-specific malware highlight the need for proactive risk analysis. Use the virtual machines (`corp-workstation`, `scada-server`, `substation-rtu`) to explore how the IT and OT networks interact.\n\n### Environment Diagram\n![Energy topology](https://github.com/NG-SOC-eu/riskmanagementrita-crcz/blob/v1/static/diagram_energy.png?raw=true)\n\n### Connection Guide\n1. Open a terminal via the CyberRangeCZ interface.\n2. Connect to the corporate workstation:\n   ```bash\n   ssh debian@corp-workstation\n   ```\n   Password: **qwerty!23**\n\n   **`You can also right-click on each system in the topology on the right to access SSH or GUI interface.`**\n\n3. From there, connect to the SCADA server and the substation RTU:\n   ```bash\n   ssh debian@scada-server\n   ssh debian@substation-rtu\n   ```\n   Password: **qwerty!23**\n\n   **`You can also right-click on each system in the topology on the right to access SSH or GUI interface.`**\n\n4. Use tools such as `nmap` to map reachable services and `wireshark` to inspect industrial protocols.\n\n## Steps\n1. Identify ICS and IT assets critical to operations.\n2. Use RITA to model ICS assets, potential threats and vulnerabilities as described in the RITA guide.\n3. Model threat scenarios such as malware propagation from IT to OT, insider manipulation of SCADA and unauthorised RTU commands.\n4. Assess safety, operational and strategic impact.\n5. Recommend controls suited for industrial environments.\n6. Summarise findings in a risk report for leadership and engineers.\n\n## Deliverables\n\nThe tables on this page are read-only – you cannot type into them. Each deliverable is produced in one of three places:\n\n| Deliverable | Where you produce it |\n|---|---|\n| ICS asset inventory, threats, vulnerabilities, risk evaluation | **RITA** (the tool of record) |\n| ICS threat model (zones, conduits, attack vectors) | `~/deliverables/exercise2/threat_model.md` |\n| Risk register | `~/deliverables/exercise2/risk_register.csv` |\n| 5x5 risk matrix, operational and safety impact | `~/deliverables/exercise2/risk_matrix.md` |\n| Mitigation plan for the OT network | `~/deliverables/exercise2/risk_treatment_plan.md` |\n| Cyber risk report for leadership | `~/deliverables/exercise2/executive_summary.md` |\n| RITA export (evidence) | `~/deliverables/exercise2/rita_export.csv` |\n\n### Working files on the machine\n\nThe templates are pre-installed on `corp-workstation`:\n\n```bash\nssh debian@corp-workstation\ncd ~/deliverables/exercise2\nls -l\nnano threat_model.md                    # or vim / mousepad\nlibreoffice --calc risk_register.csv    # spreadsheet view of the register\n```\n\nRate **operational impact and safety impact separately** – in an ICS environment a scenario with modest financial impact can still be the one that endangers people or grid stability. `risk_matrix.md` has both scales.\n\n### How you submit your answers\n\nWhen you finish, submit **`Yes`** on this level. The next level, **Exercise 2 – Deliverables submission**, is a questionnaire with an answer box for each deliverable, plus clickable grids for likelihood, operational impact and safety impact of each ICS scenario. Copy the key lines from your working files into those boxes.\n\nBefore moving on, run through `~/deliverables/exercise2/submission_checklist.md`.\n\n## Target Roles\n- Cybersecurity Risk Manager\n- OT/ICS Security Analyst\n- Security Architect\n\n## Skills Covered\n- ICS/OT-specific risk management\n- Security architecture for critical infrastructure\n- Balancing availability, safety and cyber defences\n\n## Once you have completed the exercise, submit Yes to move on to the submission questionnaire.",
+    "solution" : "Once you have completed the exercise, submit Yes to move on to the submission questionnaire.",
+    "solution_penalized" : true,
+    "hints" : [ {
+      "title" : "Hint 1",
+      "content" : "Hint 1 – Identify OT vs IT (light)\n\nStart by separating corporate IT systems (e.g. office network, business apps, email) from the OT/ICS environment (SCADA server, HMIs, PLCs, historians, engineering workstations). Which of these, if disrupted, would have a direct effect on physical operations?",
+      "hint_penalty" : 0,
+      "order" : 0
+    }, {
+      "title" : "Hint 2",
+      "content" : "Hint 2 – Zones, conduits, and access paths (medium)\n\nThink in terms of zones and conduits (as in IEC 62443):\n\nWhich systems form the control zone (e.g. PLCs, HMIs, SCADA server)?\n\nHow does the corporate network connect to the control network (jump hosts, VPN, firewall rules)?\n\nWhere is remote access into the ICS environment allowed (e.g. for maintenance)?\n\nThe paths crossing from IT to OT are usually high-risk and should be clearly reflected as high-priority assets and links in your RITA model and in the flow table of ~/deliverables/exercise2/threat_model.md.",
+      "hint_penalty" : 0,
+      "order" : 1
+    }, {
+      "title" : "Hint 3",
+      "content" : "Hint 3 – ICS-specific threats (strong)\n\nConsider threats that are particularly worrying for energy/ICS environments:\n\nUnauthorised remote access into the SCADA or engineering workstation from the corporate network or the internet.\n\nManipulation of PLC logic (changing control programs to alter physical processes).\n\nMalicious or misconfigured firmware updates on field devices.\n\nLoss of visibility (historian or HMI unavailable) leading to operators making poor decisions.\n\nPropagation of malware from IT into OT (e.g. via shared services, file transfers, or jump hosts).\n\nIn RITA, ensure you:\n\nMark safety-critical and availability-critical assets clearly (e.g. “High” impact if stopped or compromised).\n\nExplicitly document the connection between corporate and ICS networks as an asset/threat focus.\n\nPrioritise risks where a single compromise path could lead from the internet or corporate IT into the control network.",
+      "hint_penalty" : 0,
+      "order" : 2
+    } ],
+    "incorrect_answer_limit" : 100,
+    "attachments" : [ ],
+    "max_score" : 100,
+    "variant_answers" : false,
+    "reference_solution" : [ ],
+    "mitre_techniques" : [ ],
+    "expected_commands" : [ ],
+    "commands_required" : true
+  }, {
+    "title" : "Exercise 2 – Deliverables submission (Energy / ICS)",
+    "level_type" : "ASSESSMENT_LEVEL",
+    "order" : 5,
+    "estimated_duration" : 30,
+    "minimal_possible_solve_time" : null,
+    "instructions" : "This is where you hand in Exercise 2. Copy your answers from the working files in `~/deliverables/exercise2/` on `corp-workstation` and from your RITA model.\n\nHow to answer:\n\n- Free-text questions expect one item per line, using the field order given in the question and `|` as the separator. Keep the risk IDs (R01, R02, ...) consistent with your register.\n- The three rating grids replace the empty 5x5 matrix that you could not write into. Operational impact and safety impact are rated separately: in an ICS environment they are not the same thing.\n- Answers are saved when you finish the level. Nothing here is auto-graded – the instructor reviews your submission.",
+    "questions" : [ {
+      "question_type" : "FFQ",
+      "text" : "ICS asset inventory. List the five most critical assets you registered in RITA, one per line: ID | Asset name | Host or component | Zone (corporate IT / DMZ / control) | Owner | Safety-critical (yes/no).",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 0,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Zones and conduits. One conduit per line: ID | From zone | To zone | Systems at each end | Protocol and port | Access control in place | Why it is needed.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 1,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "ICS threat model. One threat scenario per line: risk_id | Asset | STRIDE category | ATT&CK for ICS technique ID and name | Attack path (entry point to physical effect) | Vulnerability that enables it.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 2,
+      "answer_required" : true
+    }, {
+      "question_type" : "EMI",
+      "text" : "Likelihood. Rate how likely each reference scenario is in the next 12 months for this transmission operator.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 3,
+      "answer_required" : true,
+      "extended_matching_options" : [ {
+        "text" : "Very Low",
+        "order" : 0
+      }, {
+        "text" : "Low",
+        "order" : 1
+      }, {
+        "text" : "Medium",
+        "order" : 2
+      }, {
+        "text" : "High",
+        "order" : 3
+      }, {
+        "text" : "Very High",
+        "order" : 4
+      } ],
+      "extended_matching_statements" : [ {
+        "text" : "S1 Malware propagates from the corporate network (corp-workstation) into the control network",
+        "order" : 0
+      }, {
+        "text" : "S2 Unauthorised remote access to the SCADA server (scada-server)",
+        "order" : 1
+      }, {
+        "text" : "S3 Unauthorised Modbus (502) or S7comm (102) commands sent to the substation RTU",
+        "order" : 2
+      }, {
+        "text" : "S4 Malicious or faulty logic or firmware update on a field device",
+        "order" : 3
+      }, {
+        "text" : "S5 Loss of visibility: HMI or historian unavailable during an incident",
+        "order" : 4
+      }, {
+        "text" : "S6 Denial of service on the link between the control centre and the substation",
+        "order" : 5
+      } ]
+    }, {
+      "question_type" : "EMI",
+      "text" : "Operational impact. Rate the effect on service continuity and business operations if each reference scenario materialises.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 4,
+      "answer_required" : true,
+      "extended_matching_options" : [ {
+        "text" : "Very Low",
+        "order" : 0
+      }, {
+        "text" : "Low",
+        "order" : 1
+      }, {
+        "text" : "Medium",
+        "order" : 2
+      }, {
+        "text" : "High",
+        "order" : 3
+      }, {
+        "text" : "Critical",
+        "order" : 4
+      } ],
+      "extended_matching_statements" : [ {
+        "text" : "S1 Malware propagates from the corporate network (corp-workstation) into the control network",
+        "order" : 0
+      }, {
+        "text" : "S2 Unauthorised remote access to the SCADA server (scada-server)",
+        "order" : 1
+      }, {
+        "text" : "S3 Unauthorised Modbus (502) or S7comm (102) commands sent to the substation RTU",
+        "order" : 2
+      }, {
+        "text" : "S4 Malicious or faulty logic or firmware update on a field device",
+        "order" : 3
+      }, {
+        "text" : "S5 Loss of visibility: HMI or historian unavailable during an incident",
+        "order" : 4
+      }, {
+        "text" : "S6 Denial of service on the link between the control centre and the substation",
+        "order" : 5
+      } ]
+    }, {
+      "question_type" : "EMI",
+      "text" : "Safety impact. Rate the risk to people, equipment and grid stability if each reference scenario materialises.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 5,
+      "answer_required" : true,
+      "extended_matching_options" : [ {
+        "text" : "No effect on the physical process",
+        "order" : 0
+      }, {
+        "text" : "Process deviation corrected automatically",
+        "order" : 1
+      }, {
+        "text" : "Manual intervention required, no danger",
+        "order" : 2
+      }, {
+        "text" : "Equipment damage or unplanned shutdown",
+        "order" : 3
+      }, {
+        "text" : "Risk to human life or to grid stability",
+        "order" : 4
+      } ],
+      "extended_matching_statements" : [ {
+        "text" : "S1 Malware propagates from the corporate network (corp-workstation) into the control network",
+        "order" : 0
+      }, {
+        "text" : "S2 Unauthorised remote access to the SCADA server (scada-server)",
+        "order" : 1
+      }, {
+        "text" : "S3 Unauthorised Modbus (502) or S7comm (102) commands sent to the substation RTU",
+        "order" : 2
+      }, {
+        "text" : "S4 Malicious or faulty logic or firmware update on a field device",
+        "order" : 3
+      }, {
+        "text" : "S5 Loss of visibility: HMI or historian unavailable during an incident",
+        "order" : 4
+      }, {
+        "text" : "S6 Denial of service on the link between the control centre and the substation",
+        "order" : 5
+      } ]
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Risk ranking. Your risks from highest to lowest, one per line: Rank | risk_id | Likelihood | Operational impact | Safety impact | Risk level | RITA score.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 6,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "RITA evidence. Give the full path and name of the export file you saved, and the number of assets, threats and risks you registered in RITA.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 7,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Mitigation plan for the OT network. One line per risk, highest priority first: Priority | risk_id | Treatment option (mitigate/transfer/avoid/accept) | Control to implement | IEC 62443 or ISO 27001 reference | Owner | Residual risk.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 8,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Operational constraints. Which of your controls cannot be applied the way they would be in IT, and what do you propose instead? Consider availability targets, maintenance windows, vendor support and safety certification.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 9,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Cyber risk report (about 1200 characters, no jargon): the situation, your top three risks in business and safety terms, the decisions you need leadership to approve, and the residual risk statement.",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 10,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Reflection. What is the most significant safety risk you identified, and what makes it worse than the others?",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 11,
+      "answer_required" : true
+    }, {
+      "question_type" : "FFQ",
+      "text" : "Reflection (optional). Which of your mitigations is the hardest to implement in this environment, and why?",
+      "points" : 0,
+      "penalty" : 0,
+      "order" : 12,
+      "answer_required" : false
+    } ],
+    "assessment_type" : "QUESTIONNAIRE"
+  } ],
+  "estimated_duration" : 540,
+  "variant_sandboxes" : false
+}

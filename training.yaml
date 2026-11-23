@@ -1,0 +1,410 @@
+---
+title: "Learning Module 2: Risk Management (NG-SOC LM2)"
+description: |
+  Training scenario comprising two hands-on exercises focused on proactive
+  cybersecurity risk management in critical sectors (financial and energy).
+  Learners use the RITA platform for dynamic risk analysis throughout the
+  exercises.
+  Participants take on the role of a Cybersecurity Risk Manager for (1) a
+  banking institution and (2) an energy infrastructure, conducting asset
+  identification and threat modelling, risk assessment (likelihood and impact),
+  and designing mitigations. Exercises are aligned with frameworks such as
+  MITRE ATT&CK, STRIDE, and the ENISA European Cybersecurity Skills Framework
+  (ECSF), and are tailored for intermediate to advanced learners in roles such
+  as Risk Manager and Security Architect. The training includes supporting
+  artefacts (e.g., network diagrams, risk matrices) and guided steps.
+prerequisites:
+  - >
+    Basic cybersecurity knowledge (threats, vulnerabilities, security controls).
+  - >
+    Familiarity with risk assessment methodologies (e.g. ISO 27005, NIST 800-30)
+    and attack frameworks.
+outcomes:
+  - >
+    Apply threat modelling methodologies (e.g. STRIDE, MITRE ATT&CK) to identify
+    vulnerabilities and attack scenarios in banking and ICS/SCADA systems.
+  - >
+    Qualitatively assess risks (likelihood and impact) and prioritise them based
+    on business and safety consequences.
+  - >
+    Recommend security controls and mitigation strategies (technical and
+    procedural) aligned with defence-in-depth principles.
+  - >
+    Translate technical risk analysis into clear action plans for both
+    technical teams and executives.
+  - >
+    Adapt risk management approaches to industrial (OT/ICS) environments,
+    accounting for availability and physical safety considerations.
+  - >
+    Develop proficiency in RITA-based modelling and risk evaluation.
+state: "RELEASED"
+show_stepper_bar: true
+levels:
+  - title: "Exercise 1: Risk Assessment and Threat Modelling (Banking Sector)"
+    level_type: "TRAINING_LEVEL"
+    order: 1
+    estimated_duration: 90
+    content: |
+      *(Detailed exercise content is provided in **content/exercise1.md**)*
+
+      Deliverables are drafted in the writable templates installed on
+      `bank-analyst` at `~/deliverables/exercise1/` and in RITA. They are
+      submitted in the questionnaire level that follows this one. Submit
+      `Yes` here once the exercise is complete.
+    answer: "Yes"
+    solution: |
+      **Expected findings**
+      - Inventory of critical banking assets (core banking services, digital channels, SWIFT interfaces, customer databases).
+      - Mapping of dependencies between internal systems and third parties, including cloud services and payment processors.
+      - Threat identification aligned with MITRE ATT&CK for financial environments (targeted phishing, credential abuse, data exfiltration).
+      - Evaluation of existing controls (MFA, fraud monitoring, segregation of duties) and detection of coverage gaps.
+
+      **Identified risks**
+      - Compromise of privileged credentials enabling fraudulent transactions or manipulation of accounting records.
+      - Ransomware affecting payment platforms, disrupting availability and threatening regulatory compliance.
+      - Exfiltration of sensitive customer data resulting in PSD2/GDPR penalties and reputational damage.
+      - Over-reliance on external suppliers without strong business continuity plans.
+
+      **Recommended mitigations**
+      - Deploy privileged access management with continuous monitoring and credential rotation.
+      - Enhance phishing resilience through awareness campaigns, advanced filtering and stronger authentication journeys.
+      - Implement network segmentation and tested immutable backups to limit ransomware impact.
+      - Formalise SLAs and contingency plans with key suppliers and rehearse recovery procedures.
+      - Integrate anomalous behaviour alerts into the SIEM and align incident response playbooks with business stakeholders.
+    answer_variable_name: null
+  - title: "Exercise 1: Deliverables submission (Banking)"
+    level_type: "ASSESSMENT_LEVEL"
+    order: 2
+    estimated_duration: 30
+    assessment_type: "QUESTIONNAIRE"
+    instructions: |
+      Hand in Exercise 1 here. Copy your answers from the working files in
+      `~/deliverables/exercise1/` on `bank-analyst` and from your RITA model.
+      Free-text answers take one item per line with `|` as the separator; the
+      rating grids replace the 5x5 matrix that cannot be filled in from the
+      exercise description.
+    questions:
+      - question_type: "FFQ"
+        text: >
+          Asset inventory. List the five most critical assets you registered in
+          RITA, one per line: ID | Asset name | Host or component | Owner |
+          C rating | I rating | A rating (High/Medium/Low).
+        points: 0
+        penalty: 0
+        order: 0
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Trust boundaries and data flows. One flow per line: ID | From | To |
+          Protocol and port | Boundary crossed | Authenticated (yes/no) |
+          Encrypted (yes/no).
+        points: 0
+        penalty: 0
+        order: 1
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Threat model. One threat scenario per line: risk_id | Asset | STRIDE
+          category | ATT&CK technique ID and name | Attack path | Vulnerability
+          that enables it.
+        points: 0
+        penalty: 0
+        order: 2
+        answer_required: true
+      - question_type: "EMI"
+        text: >
+          Likelihood. Rate how likely each reference scenario is in the next
+          12 months for this bank.
+        points: 0
+        penalty: 0
+        order: 3
+        answer_required: true
+        extended_matching_options:
+          - {text: "Very Low", order: 0}
+          - {text: "Low", order: 1}
+          - {text: "Medium", order: 2}
+          - {text: "High", order: 3}
+          - {text: "Very High", order: 4}
+        extended_matching_statements:
+          - {text: "S1 Credential stuffing or password guessing against the online banking portal (bank-web)", order: 0}
+          - {text: "S2 SQL injection from the web application into the core banking database (bank-db)", order: 1}
+          - {text: "S3 Session hijacking of a customer session between client and web front-end", order: 2}
+          - {text: "S4 Privilege misuse by an insider on the analyst workstation (bank-analyst)", order: 3}
+          - {text: "S5 Exfiltration of customer data from the core banking database", order: 4}
+          - {text: "S6 Denial of service against the public banking portal", order: 5}
+      - question_type: "EMI"
+        text: >
+          Impact. Rate the business impact if each reference scenario
+          materialises (financial, regulatory and reputational).
+        points: 0
+        penalty: 0
+        order: 4
+        answer_required: true
+        extended_matching_options:
+          - {text: "Very Low", order: 0}
+          - {text: "Low", order: 1}
+          - {text: "Medium", order: 2}
+          - {text: "High", order: 3}
+          - {text: "Critical", order: 4}
+        extended_matching_statements:
+          - {text: "S1 Credential stuffing or password guessing against the online banking portal (bank-web)", order: 0}
+          - {text: "S2 SQL injection from the web application into the core banking database (bank-db)", order: 1}
+          - {text: "S3 Session hijacking of a customer session between client and web front-end", order: 2}
+          - {text: "S4 Privilege misuse by an insider on the analyst workstation (bank-analyst)", order: 3}
+          - {text: "S5 Exfiltration of customer data from the core banking database", order: 4}
+          - {text: "S6 Denial of service against the public banking portal", order: 5}
+      - question_type: "FFQ"
+        text: >
+          Risk ranking. Your risks from highest to lowest, one per line:
+          Rank | risk_id | Likelihood | Impact | Risk level | RITA score.
+        points: 0
+        penalty: 0
+        order: 5
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          RITA evidence. Full path and name of the export file you saved, and
+          the number of assets, threats and risks you registered in RITA.
+        points: 0
+        penalty: 0
+        order: 6
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Risk treatment plan. One line per risk, highest priority first:
+          Priority | risk_id | Treatment option | Control to implement |
+          Standard reference | Owner | Residual risk.
+        points: 0
+        penalty: 0
+        order: 7
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Accepted risks. risk_id | Why it is accepted | Who accepts it |
+          Review date. Write 'none' if you are treating all of them.
+        points: 0
+        penalty: 0
+        order: 8
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Executive summary (about 1200 characters, no jargon): the situation,
+          your top three risks in business terms, the decisions you need
+          leadership to approve, and the residual risk statement.
+        points: 0
+        penalty: 0
+        order: 9
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Reflection. Which threats require immediate mitigation, and why those
+          rather than the others?
+        points: 0
+        penalty: 0
+        order: 10
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Reflection (optional). How would you communicate the residual risk to
+          leadership? What would you say to the board that you would not put in
+          a technical report?
+        points: 0
+        penalty: 0
+        order: 11
+        answer_required: false
+  - title: |
+      Exercise 2: Risk Assessment and Threat Modelling
+      (ICS Energy Infrastructure)
+    level_type: "TRAINING_LEVEL"
+    order: 3
+    estimated_duration: 90
+    content: |
+      *(Detailed exercise content is provided in **content/exercise2.md**)*
+
+      Deliverables are drafted in the writable templates installed on
+      `corp-workstation` at `~/deliverables/exercise2/` and in RITA. They are
+      submitted in the questionnaire level that follows this one. Submit
+      `Yes` here once the exercise is complete.
+    answer: "Yes"
+    solution: |
+      **Expected findings**
+      - Comprehensive inventory of OT components (SCADA, PLCs, RTUs, field networks) and dependencies with IT services.
+      - Updated ISA/IEC 62443-aligned zones and conduits diagram noting remote access paths.
+      - Threat catalogue referencing MITRE ATT&CK for ICS (remote engineering compromise, process manipulation).
+      - Assessment of current controls such as industrial firewalls, application whitelisting and OT change policies.
+
+      **Identified risks**
+      - Lateral movement from corporate IT into the industrial DMZ that degrades SCADA operations.
+      - Malicious modification of PLC parameters interrupting power generation or distribution.
+      - Denial-of-service on critical communications with insufficient redundancy between control centres.
+      - Shared remote maintenance credentials lacking supervision and audit trails.
+
+      **Recommended mitigations**
+      - Deploy continuous OT network monitoring with anomaly detection for industrial protocols.
+      - Enforce role-based access control and multi-factor authentication for remote engineering sessions.
+      - Strengthen segmentation between IT/OT and critical zones using next-generation firewalls and minimal ACLs.
+      - Institute validated patch and change management workflows with testing prior to production deployment.
+      - Design and exercise OT incident response plans coordinated with operations teams and suppliers.
+    answer_variable_name: null
+  - title: "Exercise 2: Deliverables submission (Energy / ICS)"
+    level_type: "ASSESSMENT_LEVEL"
+    order: 4
+    estimated_duration: 30
+    assessment_type: "QUESTIONNAIRE"
+    instructions: |
+      Hand in Exercise 2 here. Copy your answers from the working files in
+      `~/deliverables/exercise2/` on `corp-workstation` and from your RITA
+      model. Operational impact and safety impact are rated separately: in an
+      ICS environment they are not the same thing.
+    questions:
+      - question_type: "FFQ"
+        text: >
+          ICS asset inventory. One asset per line: ID | Asset name | Host or
+          component | Zone (corporate IT / DMZ / control) | Owner |
+          Safety-critical (yes/no).
+        points: 0
+        penalty: 0
+        order: 0
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Zones and conduits. One conduit per line: ID | From zone | To zone |
+          Systems at each end | Protocol and port | Access control in place |
+          Why it is needed.
+        points: 0
+        penalty: 0
+        order: 1
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          ICS threat model. One threat scenario per line: risk_id | Asset |
+          STRIDE category | ATT&CK for ICS technique ID and name | Attack path
+          (entry point to physical effect) | Vulnerability that enables it.
+        points: 0
+        penalty: 0
+        order: 2
+        answer_required: true
+      - question_type: "EMI"
+        text: >
+          Likelihood. Rate how likely each reference scenario is in the next
+          12 months for this transmission operator.
+        points: 0
+        penalty: 0
+        order: 3
+        answer_required: true
+        extended_matching_options:
+          - {text: "Very Low", order: 0}
+          - {text: "Low", order: 1}
+          - {text: "Medium", order: 2}
+          - {text: "High", order: 3}
+          - {text: "Very High", order: 4}
+        extended_matching_statements:
+          - {text: "S1 Malware propagates from the corporate network (corp-workstation) into the control network", order: 0}
+          - {text: "S2 Unauthorised remote access to the SCADA server (scada-server)", order: 1}
+          - {text: "S3 Unauthorised Modbus (502) or S7comm (102) commands sent to the substation RTU", order: 2}
+          - {text: "S4 Malicious or faulty logic or firmware update on a field device", order: 3}
+          - {text: "S5 Loss of visibility: HMI or historian unavailable during an incident", order: 4}
+          - {text: "S6 Denial of service on the link between the control centre and the substation", order: 5}
+      - question_type: "EMI"
+        text: >
+          Operational impact. Rate the effect on service continuity and
+          business operations if each reference scenario materialises.
+        points: 0
+        penalty: 0
+        order: 4
+        answer_required: true
+        extended_matching_options:
+          - {text: "Very Low", order: 0}
+          - {text: "Low", order: 1}
+          - {text: "Medium", order: 2}
+          - {text: "High", order: 3}
+          - {text: "Critical", order: 4}
+        extended_matching_statements:
+          - {text: "S1 Malware propagates from the corporate network (corp-workstation) into the control network", order: 0}
+          - {text: "S2 Unauthorised remote access to the SCADA server (scada-server)", order: 1}
+          - {text: "S3 Unauthorised Modbus (502) or S7comm (102) commands sent to the substation RTU", order: 2}
+          - {text: "S4 Malicious or faulty logic or firmware update on a field device", order: 3}
+          - {text: "S5 Loss of visibility: HMI or historian unavailable during an incident", order: 4}
+          - {text: "S6 Denial of service on the link between the control centre and the substation", order: 5}
+      - question_type: "EMI"
+        text: >
+          Safety impact. Rate the risk to people, equipment and grid stability
+          if each reference scenario materialises.
+        points: 0
+        penalty: 0
+        order: 5
+        answer_required: true
+        extended_matching_options:
+          - {text: "No effect on the physical process", order: 0}
+          - {text: "Process deviation corrected automatically", order: 1}
+          - {text: "Manual intervention required, no danger", order: 2}
+          - {text: "Equipment damage or unplanned shutdown", order: 3}
+          - {text: "Risk to human life or to grid stability", order: 4}
+        extended_matching_statements:
+          - {text: "S1 Malware propagates from the corporate network (corp-workstation) into the control network", order: 0}
+          - {text: "S2 Unauthorised remote access to the SCADA server (scada-server)", order: 1}
+          - {text: "S3 Unauthorised Modbus (502) or S7comm (102) commands sent to the substation RTU", order: 2}
+          - {text: "S4 Malicious or faulty logic or firmware update on a field device", order: 3}
+          - {text: "S5 Loss of visibility: HMI or historian unavailable during an incident", order: 4}
+          - {text: "S6 Denial of service on the link between the control centre and the substation", order: 5}
+      - question_type: "FFQ"
+        text: >
+          Risk ranking. One per line: Rank | risk_id | Likelihood |
+          Operational impact | Safety impact | Risk level | RITA score.
+        points: 0
+        penalty: 0
+        order: 6
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          RITA evidence. Full path and name of the export file you saved, and
+          the number of assets, threats and risks you registered in RITA.
+        points: 0
+        penalty: 0
+        order: 7
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Mitigation plan for the OT network. One line per risk, highest
+          priority first: Priority | risk_id | Treatment option | Control to
+          implement | IEC 62443 or ISO 27001 reference | Owner |
+          Residual risk.
+        points: 0
+        penalty: 0
+        order: 8
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Operational constraints. Which of your controls cannot be applied the
+          way they would be in IT, and what do you propose instead?
+        points: 0
+        penalty: 0
+        order: 9
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Cyber risk report (about 1200 characters, no jargon): the situation,
+          your top three risks in business and safety terms, the decisions you
+          need leadership to approve, and the residual risk statement.
+        points: 0
+        penalty: 0
+        order: 10
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Reflection. What is the most significant safety risk you identified,
+          and what makes it worse than the others?
+        points: 0
+        penalty: 0
+        order: 11
+        answer_required: true
+      - question_type: "FFQ"
+        text: >
+          Reflection (optional). Which of your mitigations is the hardest to
+          implement in this environment, and why?
+        points: 0
+        penalty: 0
+        order: 12
+        answer_required: false
+estimated_duration: 240
+variant_sandboxes: true

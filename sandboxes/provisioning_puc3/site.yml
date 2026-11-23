@@ -1,0 +1,102 @@
+---
+- name: Configure router
+  hosts: router
+  become: true
+  tasks:
+    - name: Enable IP forwarding
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        state: present
+    - name: Ensure iptables-persistent is installed
+      ansible.builtin.apt:
+        name: iptables-persistent
+        state: present
+      environment:
+        DEBIAN_FRONTEND: noninteractive
+    - name: Ensure NAT for ics-net is configured
+      ansible.posix.iptables:
+        table: nat
+        chain: POSTROUTING
+        source: 10.0.2.0/24
+        out_interface: eth2
+        jump: MASQUERADE
+        state: present
+    - name: Persist iptables rules
+      community.general.iptables_state:
+        state: saved
+        path: /etc/iptables/rules.v4
+
+- name: Configure substation RTU
+  hosts: substation-rtu
+  become: true
+  tasks:
+    - name: Install netcat for ICS port simulation
+      ansible.builtin.apt:
+        update_cache: true
+        name: netcat
+        state: present
+    - name: Deploy netcat listener service
+      ansible.builtin.template:
+        src: ../../provisioning/templates/nc-listener@.service.j2
+        dest: /etc/systemd/system/nc-listener@.service
+        mode: '0644'
+    - name: Reload systemd to pick up nc listener unit
+      ansible.builtin.systemd:
+        daemon_reload: true
+    - name: Ensure Modbus service listening on port 502
+      ansible.builtin.service:
+        name: nc-listener@502
+        state: started
+        enabled: true
+    - name: Ensure S7comm service listening on port 102
+      ansible.builtin.service:
+        name: nc-listener@102
+        state: started
+        enabled: true
+
+- name: Install and configure RITA
+  hosts: rita-server
+  become: true
+  tasks:
+    - name: Install RITA
+      ansible.builtin.apt:
+        update_cache: true
+        name: rita
+        state: present
+    - name: Ensure RITA service is running
+      ansible.builtin.service:
+        name: rita
+        state: started
+        enabled: true
+
+- name: Deploy deliverable templates to the analyst workstation
+  hosts: corp-workstation
+  become: true
+  vars:
+    deliverables_user: debian
+  tasks:
+    - name: Ensure the deliverables directory exists
+      ansible.builtin.file:
+        path: "/home/{{ deliverables_user }}/deliverables/exercise2"
+        state: directory
+        owner: "{{ deliverables_user }}"
+        group: "{{ deliverables_user }}"
+        mode: '0755'
+    - name: Copy the fillable deliverable templates
+      ansible.builtin.copy:
+        src: "../../content/templates/"
+        dest: "/home/{{ deliverables_user }}/deliverables/exercise2/"
+        owner: "{{ deliverables_user }}"
+        group: "{{ deliverables_user }}"
+        mode: '0644'
+        directory_mode: '0755'
+
+- name: Remove UFW from all hosts
+  hosts: all
+  become: true
+  tasks:
+    - name: Remove UFW firewall
+      ansible.builtin.apt:
+        name: ufw
+        state: absent

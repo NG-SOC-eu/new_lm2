@@ -1,0 +1,12 @@
+risk_id,asset,asset_owner,cia_rating,threat_scenario,stride_category,attack_technique,vulnerability,existing_control,likelihood,impact,risk_level,treatment_option,recommended_control,priority,residual_risk
+R00,EXAMPLE - Online banking web front-end,Digital Channels team,C:High/I:High/A:High,Credential stuffing against the customer login page,Spoofing,T1110.004 Credential Stuffing,No rate limiting and no MFA on login,WAF in detection-only mode,High,High,High,Mitigate,Enforce MFA + rate limiting + credential-stuffing detection,1,Low
+R01,,,,,,,,,,,,,,,
+R02,,,,,,,,,,,,,,,
+R03,,,,,,,,,,,,,,,
+R04,,,,,,,,,,,,,,,
+R05,,,,,,,,,,,,,,,
+R06,,,,,,,,,,,,,,,
+R07,,,,,,,,,,,,,,,
+R08,,,,,,,,,,,,,,,
+R09,,,,,,,,,,,,,,,
+R10,,,,,,,,,,,,,,,

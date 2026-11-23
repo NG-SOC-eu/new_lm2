@@ -1,0 +1,322 @@
+---
+- name: Configure router
+  hosts: router
+  become: true
+  tasks:
+    - name: Install prerequisites
+      apt:
+        name:
+          - iptables-persistent
+        state: present
+        update_cache: yes
+    - name: Enable IP forwarding
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        state: present
+    - name: Ensure iptables-persistent is installed
+      ansible.builtin.apt:
+        name: iptables-persistent
+        state: present
+      environment:
+        DEBIAN_FRONTEND: noninteractive
+    - name: Ensure NAT for bank-net is configured
+      ansible.builtin.iptables:
+        table: nat
+        chain: POSTROUTING
+        source: 10.0.1.0/24
+        out_interface: ens5
+        jump: MASQUERADE
+        state: present
+    - name: Ensure NAT for ics-net is configured
+      ansible.builtin.iptables:
+        table: nat
+        chain: POSTROUTING
+        source: 10.0.2.0/24
+        out_interface: ens6
+        jump: MASQUERADE
+        state: present
+    - name: Persist iptables rules
+      community.general.iptables_state:
+        state: saved
+        path: /etc/iptables/rules.v4
+
+- name: Configure bank web server
+  hosts: bank-web
+  become: true
+  tasks:
+    - name: Install Apache2
+      ansible.builtin.apt:
+        update_cache: true
+        name: apache2
+        state: present
+    - name: Deploy banking portal page
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        content: "<h1>Welcome to Online Banking</h1><p>Secure login portal.</p>"
+        mode: '0644'
+
+- name: Configure bank database
+  hosts: bank-db
+  become: true
+  tasks:
+    - name: Install MariaDB
+      ansible.builtin.apt:
+        update_cache: true
+        name: mariadb-server
+        state: present
+    - name: Allow remote DB access
+      ansible.builtin.lineinfile:
+        path: /etc/mysql/mariadb.conf.d/50-server.cnf
+        regexp: '^bind-address'
+        line: 'bind-address = 0.0.0.0'
+
+- name: Configure substation RTU
+  hosts: substation-rtu
+  become: true
+  tasks:
+    - name: Install netcat for ICS port simulation
+      ansible.builtin.apt:
+        update_cache: true
+        name: netcat-openbsd
+        state: present
+    - name: Deploy netcat listener service
+      ansible.builtin.template:
+        src: templates/nc-listener@.service.j2
+        dest: /etc/systemd/system/nc-listener@.service
+        mode: '0644'
+    - name: Reload systemd to pick up nc listener unit
+      ansible.builtin.systemd:
+        daemon_reload: true
+    - name: Ensure Modbus service listening on port 502
+      ansible.builtin.service:
+        name: nc-listener@502
+        state: started
+        enabled: true
+    - name: Ensure S7comm service listening on port 102
+      ansible.builtin.service:
+        name: nc-listener@102
+        state: started
+        enabled: true
+
+- name: Configure Ubuntu-Docker-Rita
+  hosts: rita-server
+  become: true
+  tasks:
+    - name: Set password on User ubuntu
+      ansible.builtin.user:
+        name: ubuntu
+        password: "$y$j9T$r1LaddN0V6MPqFmZl5U7C/$4xbYJL5zi/YFU85SL/gXz5UXs3JAXV5dU5CUvTN/WN9"
+        update_password: always
+
+    - name: Install Docker prerequisites
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - smbclient
+          - cifs-utils
+          - unzip
+        state: present
+        update_cache: yes
+
+    - name: Create /etc/apt/keyrings directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download Docker GPG key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
+
+    - name: Add Docker APT repository
+      ansible.builtin.shell: |
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+      args:
+        creates: /etc/apt/sources.list.d/docker.list
+      register: repo_add
+      changed_when: repo_add.rc == 0
+
+    - name: Update APT cache after adding repository
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install Docker packages
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
+
+    - name: Ensure Docker service is started and enabled
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create mount point
+      ansible.builtin.file:
+        path: "/mnt/smb_shared"
+        state: directory
+        mode: "0775"
+        
+    - name: Mount SMB Share (guest)
+      ansible.builtin.mount:
+        src: "//10.250.232.198/shared"
+        path: "/mnt/smb_shared"
+        fstype: cifs
+        opts: "guest,vers=3.0"
+        state: mounted
+
+    - name: Copy RITA zip from SMB to destination
+      ansible.builtin.copy:
+        src: "/mnt/smb_shared/rita-docker.zip"
+        dest: "/opt/rita-docker.zip"
+        remote_src: true
+        mode: "0644"
+    
+    - name: Unarchive RITA Docker bundle
+      ansible.builtin.unarchive:
+        src: "/opt/rita-docker.zip"
+        dest: "/opt/"
+        remote_src: true
+        extra_opts: ["-o"]
+
+    - name: Unzip rita frontend dist.zip
+      ansible.builtin.unarchive:
+        src: "/opt/rita-docker/frontend-container/rita-frontend/dist.zip"
+        dest: "/opt/rita-docker/frontend-container/rita-frontend"
+        remote_src: true
+        extra_opts: ["-o"]
+
+    - name: Ensure RITA Docker network exists
+      community.docker.docker_network:
+        name: rita-network
+        state: present
+
+    - name: Login to Docker Hub
+      community.docker.docker_login:
+        username: demongsoc
+        password: "dckr_pat_OzOR3rfLKW3QcFAFUfAi_Je_5_Q"
+
+    - name: Build and run RITA backend services
+      community.docker.docker_compose_v2:
+        project_src: "/opt/rita-docker/backend-container"
+        state: present
+        build: always
+      register: backend_compose_output
+
+    - name: Build and run RITA frontend services
+      community.docker.docker_compose_v2:
+        project_src: "/opt/rita-docker/frontend-container"
+        state: present
+        build: always
+      register: frontend_compose_output
+        
+    - name: Build and run RITA tools services
+      community.docker.docker_compose_v2:
+        project_src: "/opt/rita-docker/tools-containers"
+        state: present
+        build: always
+      register: tools_compose_output
+
+    - name: Show Docker Compose output
+      ansible.builtin.debug:
+        msg: |
+          Backend: {{ backend_compose_output | default('No output captured') }}
+          Frontend: {{ frontend_compose_output | default('No output captured') }}
+          Tools: {{ tools_compose_output | default('No output captured') }}
+
+    - name: Unmount SMB share
+      ansible.builtin.mount:
+        path: "/mnt/smb_shared"
+        state: unmounted
+      when: true
+
+
+- name: Remove UFW from all hosts
+  hosts: all
+  become: true
+  vars_files:
+    - vars/users.yml
+  tasks:
+    - name: Remove UFW firewall
+      ansible.builtin.apt:
+        name: ufw
+        state: absent
+    - name: Create User
+      ansible.builtin.user:
+        name: debian
+        password: "{{ debian_user_password_hash }}"
+        update_password: always
+        state: present
+    - name: Give sudo privileges
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/debian
+        content: "debian ALL=(ALL) /usr/bin/apt-get, /usr/bin/systemctl"
+        mode: '0440'
+        validate: 'visudo -cf %s'
+
+# --- Deliverable templates the trainees fill in during the exercises
+- name: Deploy deliverable templates to the analyst workstations
+  hosts: bank-analyst,corp-workstation
+  become: true
+  vars:
+    deliverables_user: debian
+    deliverables_exercise:
+      bank-analyst: exercise1
+      corp-workstation: exercise2
+  tasks:
+    - name: Ensure the deliverables directory exists
+      ansible.builtin.file:
+        path: "/home/{{ deliverables_user }}/deliverables/{{ deliverables_exercise[inventory_hostname] }}"
+        state: directory
+        owner: "{{ deliverables_user }}"
+        group: "{{ deliverables_user }}"
+        mode: '0755'
+    - name: Copy the fillable deliverable templates
+      ansible.builtin.copy:
+        src: "../content/templates/"
+        dest: "/home/{{ deliverables_user }}/deliverables/{{ deliverables_exercise[inventory_hostname] }}/"
+        owner: "{{ deliverables_user }}"
+        group: "{{ deliverables_user }}"
+        mode: '0644'
+        directory_mode: '0755'
+    - name: Point the trainee at the templates on login
+      ansible.builtin.copy:
+        dest: "/home/{{ deliverables_user }}/deliverables/README.txt"
+        owner: "{{ deliverables_user }}"
+        group: "{{ deliverables_user }}"
+        mode: '0644'
+        content: |
+          Fill in your deliverables in
+          ~/deliverables/{{ deliverables_exercise[inventory_hostname] }}/
+
+          These files are writable: edit them with nano, vim or mousepad.
+          Save the RITA export in the same folder as rita_export.csv.
+          Then copy the key lines into the "Deliverables submission"
+          questionnaire in the CyberRangeCZ Platform - that is what is graded.
+
+# --- Change man syslog-ng and adding Command Logging
+- name: Changing syslog-ng on man
+  hosts: man
+  become: yes
+  roles:
+    - man
+
+- name: set up command logging
+  hosts: 
+    - routers
+    - hosts
+  roles:
+    - role: sandbox-logging
+      become: yes
+      slf_destination_port: '{% if hostvars["man"] is defined -%} 514 {%- else -%} 515 {%- endif %}'
+      when: ansible_system == "Linux"
