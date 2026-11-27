@@ -1,4 +1,4 @@
-name: ngsoc-lm2
+name: ngsoc-lm2-risk-management
 # RITA (rita-server) reachable at rita-server (10.0.12.60)
 hosts:
   - name: bank-analyst
